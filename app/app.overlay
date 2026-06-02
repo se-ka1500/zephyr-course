@@ -10,4 +10,10 @@
             label = "User LED";
         };
     };
+
+    our_led_sensor: our_led_sensor {
+        compatible = "custom,led-sensor";
+        gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+        status = "okay";
+    };
 };

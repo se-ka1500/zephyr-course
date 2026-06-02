@@ -1,0 +1,11 @@
+description: Custom LED Sensor (GPIO-based)
+
+compatible: "custom,led-sensor"
+
+include: sensor-device.yaml
+
+properties:
+  gpios:
+    type: phandle-array
+    required: true
+    description: GPIO connected to the LED

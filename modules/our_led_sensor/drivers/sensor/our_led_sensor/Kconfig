@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+
+config OUR_LED_SENSOR
+	bool "Our LED Sensor driver"
+	default y
+	depends on DT_HAS_CUSTOM_LED_SENSOR_ENABLED
+	select GPIO
+	help
+	  Enable the custom LED sensor driver.

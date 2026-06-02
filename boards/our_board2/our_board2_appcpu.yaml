@@ -1,0 +1,10 @@
+identifier: our_board2/esp32s3/appcpu
+name: Our Board 2 APPCPU
+type: mcu
+arch: xtensa
+toolchain:
+  - zephyr
+supported:
+  - gpio
+  - uart
+vendor: custom

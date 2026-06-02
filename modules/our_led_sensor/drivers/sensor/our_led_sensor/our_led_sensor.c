@@ -65,6 +65,27 @@ static int our_led_sensor_init(const struct device *dev)
 	return gpio_pin_configure_dt(&cfg->gpio, GPIO_OUTPUT_INACTIVE);
 }
 
+int our_led_sensor_toggle(const struct device *dev)
+{
+	struct our_led_sensor_data *data = dev->data;
+	const struct our_led_sensor_config *cfg = dev->config;
+	int ret;
+
+	if (data->led_on) {
+		ret = gpio_pin_set_dt(&cfg->gpio, 0);
+		if (ret == 0) {
+			data->led_on = false;
+		}
+	} else {
+		ret = gpio_pin_set_dt(&cfg->gpio, 1);
+		if (ret == 0) {
+			data->led_on = true;
+		}
+	}
+
+	return ret;
+}
+
 #define OUR_LED_SENSOR_DEFINE(inst)                                       \
 	static struct our_led_sensor_data our_led_sensor_data_##inst;         \
 	static const struct our_led_sensor_config our_led_sensor_cfg_##inst = { \

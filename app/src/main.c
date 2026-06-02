@@ -4,6 +4,9 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
+/* Task 2 custom extension API header */
+#include <drivers/sensor/our_led_sensor.h>
+
 LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
 #define LED_SENSOR_NODE DT_COMPAT_GET_ANY_STATUS_OKAY(custom_led_sensor)
@@ -27,6 +30,10 @@ int main(void)
 	sensor_channel_get(dev, SENSOR_CHAN_ALL, NULL);
 	LOG_INF("LED should be OFF after channel_get");
 	k_msleep(1000);
+
+	/* Task 2: call custom extension API */
+	our_led_sensor_toggle(dev);
+	LOG_INF("LED toggled via custom API");
 
 	while (1) {
 		k_msleep(1000);

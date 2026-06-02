@@ -1,0 +1,103 @@
+# ============================================================================
+# Application Kconfig — LED Subsystem
+# ============================================================================
+# This file defines the configuration space for the course application's
+# LED heartbeat subsystem.  It demonstrates:
+#   • A top-level menu entry
+#   • A conditional block (`if … endif`)
+#   • A `choice` with mutually-exclusive options
+#   • An `int` symbol with `range`
+#   • A `visible if` dependency on a sub-menu (modern Zephyr syntax)
+#
+# Zephyr's Kconfig auto-discovery will pick up this file because it lives in
+# APPLICATION_SOURCE_DIR (i.e. the same directory as CMakeLists.txt).
+# ============================================================================
+
+menu "LED Subsystem"
+
+# ---------------------------------------------------------------------------
+# Master switch — everything below depends on this symbol.
+# ---------------------------------------------------------------------------
+config LED_SUBSYSTEM
+	bool "Enable LED Subsystem"
+	default y
+	help
+	  Enable the LED heartbeat subsystem.  When disabled, the LED pin is
+	  left in its default (high-impedance) state and no GPIO activity occurs.
+
+# ---------------------------------------------------------------------------
+# All options below are visible only when the master switch is on.
+# ---------------------------------------------------------------------------
+if LED_SUBSYSTEM
+
+# ---------------------------------------------------------------------------
+# LED operating mode — mutually exclusive choices.
+# ---------------------------------------------------------------------------
+choice LED_MODE
+	prompt "LED operating mode"
+	default LED_MODE_BLINK
+	help
+	  Select how the LED behaves at run-time.
+
+	  BLINK  – periodic toggle (heartbeat).
+	  SOLID  – continuously driven ON.
+	  OFF    – continuously driven OFF.
+
+config LED_MODE_BLINK
+	bool "Blink (heartbeat)"
+	help
+	  Toggle the LED at the period defined by APP_HEARTBEAT_PERIOD_MS.
+
+config LED_MODE_SOLID
+	bool "Solid ON"
+	help
+	  Drive the LED GPIO active-high and keep it on indefinitely.
+
+config LED_MODE_OFF
+	bool "Off"
+	help
+	  Drive the LED GPIO inactive and keep it off indefinitely.
+
+endchoice
+
+# ---------------------------------------------------------------------------
+# Tuning options — only relevant when the mode is BLINK.
+# ---------------------------------------------------------------------------
+menu "Blink Tuning"
+	visible if LED_MODE_BLINK
+
+config APP_HEARTBEAT_PERIOD_MS
+	int "Heartbeat period (ms)"
+	default 1000
+	range 100 5000
+	help
+	  Blink period in milliseconds.  The value is clamped to the range
+	  [100, 5000] to prevent eye-strain (too fast) or unresponsiveness
+	  (too slow).
+
+endmenu
+
+# ---------------------------------------------------------------------------
+# Diagnostics options — visible whenever the subsystem is enabled.
+# ---------------------------------------------------------------------------
+menu "Diagnostics"
+	visible if LED_SUBSYSTEM
+
+config LED_LOG_VERBOSE
+	bool "Verbose LED logging"
+	default n
+	help
+	  Log every LED state change to the console.  Useful for verifying that
+	  the chosen mode and period are actually being applied at run-time.
+
+endmenu
+
+endif # LED_SUBSYSTEM
+
+endmenu
+
+# ---------------------------------------------------------------------------
+# Pull in the full Zephyr Kconfig tree so that standard symbols (GPIO, LOG,
+# etc.) are defined and can be referenced from prj.conf / defconfig files.
+# ---------------------------------------------------------------------------
+source "Kconfig.zephyr"

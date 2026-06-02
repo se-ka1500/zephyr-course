@@ -24,11 +24,11 @@ https://github.com/se-ka1500/zephyr-course
 
 ---
 
-## 2a. Hardware Target — ESP32-S3-DevKitC
+## 2a. Hardware Target — ESP32-S3-DevKitC (Course App)
 
 Build command:
 ```bash
-west build -b esp32s3_devkitc/esp32s3/procpu zephyr/samples/hello_world
+west build -b esp32s3_devkitc/esp32s3/procpu app/
 ```
 
 Flash command:
@@ -36,11 +36,17 @@ Flash command:
 west flash --esp-device /dev/cu.usbserial-A5069RR4
 ```
 
-### Boot Banner (serial output)
+### Serial Output (1s LED toggle verified)
 
 ```
 *** Booting Zephyr OS build v4.2.0 ***
-Hello World! esp32s3_devkitc/esp32s3/procpu
+[00:00:01.184,000] <inf> main: LED state: ON
+[00:00:02.184,000] <inf> main: LED state: OFF
+[00:00:03.184,000] <inf> main: LED state: ON
+[00:00:04.184,000] <inf> main: LED state: OFF
+[00:00:05.184,000] <inf> main: LED state: ON
+[00:00:06.185,000] <inf> main: LED state: OFF
+[00:00:07.185,000] <inf> main: LED state: ON
 ```
 
 Full serial log:
@@ -78,7 +84,13 @@ I (134) spi_flash: detected chip: boya
 I (134) spi_flash: flash io: dio
 W (134) spi_flash: Detected size(16384k) larger than the size in the binary image header(8192k). Using the size in the binary image header.
 *** Booting Zephyr OS build v4.2.0 ***
-Hello World! esp32s3_devkitc/esp32s3/procpu
+[00:00:01.184,000] <inf> main: LED state: ON
+[00:00:02.184,000] <inf> main: LED state: OFF
+[00:00:03.184,000] <inf> main: LED state: ON
+[00:00:04.184,000] <inf> main: LED state: OFF
+[00:00:05.184,000] <inf> main: LED state: ON
+[00:00:06.185,000] <inf> main: LED state: OFF
+[00:00:07.185,000] <inf> main: LED state: ON
 ```
 
 ---
@@ -111,5 +123,5 @@ Hello World! qemu_x86/atom
 ## Conclusion
 
 - Environment set up successfully
-- `hello_world` built and flashed on ESP32-S3-DevKitC — boot banner verified
+- `app/` (LED blink) built and flashed on ESP32-S3-DevKitC — 1s toggle verified
 - `hello_world` built and run on `qemu_x86` — boot banner verified

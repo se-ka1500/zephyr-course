@@ -96,6 +96,37 @@ endif # LED_SUBSYSTEM
 
 endmenu
 
+# ============================================================================
+# Application Kconfig — Button Subsystem (DT-aware)
+# ============================================================================
+# Demonstrates Kconfig / Devicetree integration:
+#   • The symbol is available only when the alias 'button0' exists in the
+#     merged devicetree and its target node has status = "okay".
+# ============================================================================
+
+menu "Button Subsystem"
+
+config BUTTON_SUBSYSTEM
+	bool "Enable Button Subsystem"
+	default y
+	depends on $(dt_alias_enabled,button0)
+	help
+	  Enable the button reading subsystem.  This symbol is automatically
+	  visible / selectable only when the devicetree alias 'button0' is
+	  present and its target node is enabled.
+
+if BUTTON_SUBSYSTEM
+
+config BUTTON_LOG_VERBOSE
+	bool "Verbose button logging"
+	default n
+	help
+	  Log every button state change to the console.
+
+endif # BUTTON_SUBSYSTEM
+
+endmenu
+
 # ---------------------------------------------------------------------------
 # Pull in the full Zephyr Kconfig tree so that standard symbols (GPIO, LOG,
 # etc.) are defined and can be referenced from prj.conf / defconfig files.

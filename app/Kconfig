@@ -68,11 +68,11 @@ menu "Blink Tuning"
 
 config APP_HEARTBEAT_PERIOD_MS
 	int "Heartbeat period (ms)"
-	default 1000
-	range 100 5000
+	default 500
+	range 100 2000
 	help
 	  Blink period in milliseconds.  The value is clamped to the range
-	  [100, 5000] to prevent eye-strain (too fast) or unresponsiveness
+	  [100, 2000] to prevent eye-strain (too fast) or unresponsiveness
 	  (too slow).
 
 endmenu
@@ -93,37 +93,6 @@ config LED_LOG_VERBOSE
 endmenu
 
 endif # LED_SUBSYSTEM
-
-endmenu
-
-# ============================================================================
-# Application Kconfig — Button Subsystem (DT-aware)
-# ============================================================================
-# Demonstrates Kconfig / Devicetree integration:
-#   • The symbol is available only when the alias 'button0' exists in the
-#     merged devicetree and its target node has status = "okay".
-# ============================================================================
-
-menu "Button Subsystem"
-
-config BUTTON_SUBSYSTEM
-	bool "Enable Button Subsystem"
-	default y
-	depends on $(dt_alias_enabled,button0)
-	help
-	  Enable the button reading subsystem.  This symbol is automatically
-	  visible / selectable only when the devicetree alias 'button0' is
-	  present and its target node is enabled.
-
-if BUTTON_SUBSYSTEM
-
-config BUTTON_LOG_VERBOSE
-	bool "Verbose button logging"
-	default n
-	help
-	  Log every button state change to the console.
-
-endif # BUTTON_SUBSYSTEM
 
 endmenu
 

@@ -4,3 +4,15 @@ build
 # West files
 .west
 deps
+
+# Handoff files (AI session notes, not coursework)
+homework/handoff*.md
+
+# Lecture slide PNG folders (do not commit)
+homework/l*_pages/
+
+# macOS
+.DS_Store
+
+# Backup twister output directories
+twister-out.*/
